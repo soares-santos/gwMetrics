@@ -12,6 +12,7 @@ source activate default
 
 mkdir /data/des40.a/data/marcelle/lsstEnv
 conda create --prefix=/data/des40.a/data/marcelle/lsstEnv python=2.7
+source activate /data/des40.a/data/marcelle/lsstEnv
 conda config --add channels http://conda.lsst.codes/sims
 
 # STEP 3. Hack to avoid filling up your home area
@@ -28,6 +29,14 @@ conda install lsst-sims
 
 # STEP 5. Setup the environment to use codes
 
-source activate /data/des40.a/data/marcelle/lsstEnv
+cd ~/.conda/envs
+ln -s /data/des40.a/data/marcelle/lsstEnv .
+cd -
+source activate lsstEnv
 source /data/des40.a/data/marcelle/lsstEnv/bin/eups-setups.sh
 setup lsst_sims
+
+# STEP 6. Quick test
+
+python
+>>> import lsst.sims.maf.db as db
