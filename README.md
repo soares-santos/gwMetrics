@@ -8,14 +8,14 @@ Mergers of compact binary systems have great potential to be used as standard si
 This study aims at developing a strategy to realize this potential and establish a new powerful cosmological probe.
 
 ## People
-
+```
 Marcelle Soares-Santos
 Antonella Palmese
 Tina Peters
 Alex Malz
 James Annis
 Eric Neilsen
-
+```
 ## How-to Run a Simple Test
 
 ```
