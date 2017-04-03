@@ -1,0 +1,33 @@
+# Commands used to install MAF at FNAL -- Apr 3, 2017
+# Adapted from the instructions found here:
+# https://confluence.lsstcorp.org/display/SIM/Catalogs+and+MAF
+
+# STEP 1. Launch the default environment
+
+export CONDA_DIR=/cvmfs/des.opensciencegrid.org/fnal/anaconda2/
+export PATH=$CONDA_DIR/bin:$PATH
+source activate default
+
+# STEP 2. Create new environment for LSST work
+
+mkdir /data/des40.a/data/marcelle/lsstEnv
+conda create --prefix=/data/des40.a/data/marcelle/lsstEnv python=2.7
+conda config --add channels http://conda.lsst.codes/sims
+
+# STEP 3. Hack to avoid filling up your home area
+
+mv ~/.conda /data/des40.a/data/marcelle/
+cd
+ln -s /data/des40.a/data/marcelle/.conda .
+cd -
+
+# STEP 4. Install these two packages 
+
+conda install lsst-apps
+conda install lsst-sims
+
+# STEP 5. Setup the environment to use codes
+
+source activate /data/des40.a/data/marcelle/lsstEnv
+source /data/des40.a/data/marcelle/lsstEnv/bin/eups-setups.sh
+setup lsst_sims
