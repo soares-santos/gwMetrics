@@ -9,15 +9,16 @@ This study aims at developing a strategy to realize this potential and establish
 
 ## People
 
-[Marcelle Soares-Santos](marcelle@fnal.gov)
-[Antonella Palmese](antonella.palmese.13@ucl.ac.uk)
-[Tina Peters]()
-[Alex Malz]()
-[James Annis]()
-[Eric Neilsen]()
+Marcelle Soares-Santos
+Antonella Palmese
+Tina Peters
+Alex Malz
+James Annis
+Eric Neilsen
 
 ## How-to Run a Simple Test
 
+```
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -53,11 +54,11 @@ mb0 = metricBundles.MetricBundle(metric, slicer, sql0,  plotDict=plotDict0, plot
 mbD = {0:mb0}
 bgroup = metricBundles.MetricBundleGroup(mbD, opsdb, outDir=outdir, resultsDb=resultsDb)
 bgroup.runAll()
-
+```
 
 
 
 
 ## License, Contributing
 
-The code in this repo is available for re-use under the MIT license. If you are interested in this project, please contact us by writing an [issue](https://github.com/aimalz/scippr/issues/new). To get started contributing to the project, just fork the repo - pull requests are always welcome!
+The code in this repo is available for re-use under the MIT license. If you are interested in this project, please contact us by writing an [issue](https://github.com/soares-santos/gwMetrics/issues/new). To get started contributing to the project, just fork the repo - pull requests are always welcome!
