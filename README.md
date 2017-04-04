@@ -15,6 +15,8 @@ Tina Peters
 Alex Malz
 James Annis
 Eric Neilsen
+Hiranya Peiris
+Rahul Biswas
 ```
 ## How-to Run a Simple Test
 
