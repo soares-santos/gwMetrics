@@ -2,6 +2,8 @@
 # Adapted from the instructions found here:
 # https://confluence.lsstcorp.org/display/SIM/Catalogs+and+MAF
 
+# To use existing installation, jump to steps 5 and 6
+
 # STEP 1. Launch the default environment
 
 export CONDA_DIR=/cvmfs/des.opensciencegrid.org/fnal/anaconda2/
@@ -32,11 +34,13 @@ conda install lsst-sims
 cd ~/.conda/envs
 ln -s /data/des40.a/data/marcelle/lsstEnv .
 cd -
+
+# STEP 6. Quick test (try this on a new shell)
+
+export CONDA_DIR=/cvmfs/des.opensciencegrid.org/fnal/anaconda2/
+export PATH=$CONDA_DIR/bin:$PATH
 source activate lsstEnv
 source /data/des40.a/data/marcelle/lsstEnv/bin/eups-setups.sh
 setup lsst_sims
-
-# STEP 6. Quick test
-
 python
 >>> import lsst.sims.maf.db as db
