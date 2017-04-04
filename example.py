@@ -26,7 +26,7 @@ file = 'kraken_1042_sqlite.db'
 outdir = './example-outputs/'
 
 mjds=np.array([1.,8.,15.])
-ras=np.random.rand(3)*180.
+ras=np.random.rand(3)*360.
 decs=np.random.rand(3)*(-30.)
 print ras,decs
 maps=make_maps.gaussian2d_from_sample_map(ras,decs,sigma_ra=5.,sigma_dec=5.)
