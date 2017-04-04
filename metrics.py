@@ -23,8 +23,8 @@ class AreaProb(BaseMetric):
         # We currently do this using 'super', which just calls BaseMetric's method.
         # The call to super just basically looks like this .. you must pass the columns you need, and the kwargs.
         super(AreaProb, self).__init__(col=cols, metricName=metricName, **kwargs)
-        self.maps = None
-        self.mjds = None
+        self.maps = []
+        self.mjds = np.zeros(1)
     def setEvents(maps,mjds):
         self.maps = maps
         self.mjds = mjds
