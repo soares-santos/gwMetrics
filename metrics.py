@@ -16,17 +16,22 @@ class AreaProb(BaseMetric):
         # Set the values we want to keep for our class.
         self.MJDcol = 'expMJD'
         self.RAcol = 'fieldRA'
-        self.DECcol = 'fieldDEC'
+        self.DECcol = 'fieldDec'
         self.Fcol = 'filter'
         cols=[self.MJDcol, self.RAcol, self.DECcol, self.Fcol]
         # Now we have to call the BaseMetric's __init__ method, to get the "framework" part set up.
         # We currently do this using 'super', which just calls BaseMetric's method.
         # The call to super just basically looks like this .. you must pass the columns you need, and the kwargs.
         super(AreaProb, self).__init__(col=cols, metricName=metricName, **kwargs)
+        self.maps = None
+        self.mjds = None
+    def setEvents(maps,mjds):
+        self.maps = maps
+        self.mjds = mjds
     # Now write out "run" method, the part that does the metric calculation.
     def run(self, dataSlice, slicePoint=None):
         result = defs.meanProb(dataSlice[self.MJDcol], dataSlice[self.RAcol], dataSlice[self.DECcol], dataSlice[self.Fcol], 
-                               event_prob_maps, event_mjds, 
+                               self.maps, self.mjds, 
                                delta_t=10.,nside=16,band=None)
         return result
 
