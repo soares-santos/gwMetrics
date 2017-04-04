@@ -62,7 +62,7 @@ def one_gaussian2d_from_sample_map(hpx,ra,dec,sigma_ra,sigma_dec,nside_p):
 
     for pix in range(len(hpx_p)):
         ra_pix,dec_pix=pix2radec(pix,nside_p)
-        if ra_pix > 180. : ra_pix = 360. - ra_pix 
+        #if ra_pix > 180. : ra_pix = 360. - ra_pix 
         ra_idx=(np.abs(ra_bin_edges-ra_pix)).argmin()
         dec_idx=(np.abs(dec_bin_edges-dec_pix)).argmin()
         ra_p=ra_prob[ra_idx]

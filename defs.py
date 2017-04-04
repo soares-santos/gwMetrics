@@ -9,19 +9,22 @@ import emcee
 import scipy.stats as stats
 from palettable.colorbrewer.qualitative import Paired_11
 colors = Paired_11.hex_colors
+import healpy as hp
 
 def meanProb(mjd_obs, ra_obs, dec_obs, band_obs, event_prob_maps, event_mjds, delta_t=10.,nside=16,band=None):
     nevents = len(event_prob_maps)
+    #print nevents
     if len(event_mjds) != nevents : 
         print "Error: event_mjds and event_prob_maps must have the same length." 
         exit
     total_prob = 0.
     for i in np.arange(nevents):
-        ix = ((mjd_obs < event_mjd[i] + delta_t) & (mjd_obs > event_mjd[i]))
+        ix = ((mjd_obs < event_mjds[i] + delta_t) & (mjd_obs > event_mjds[i]))
         hpix=hp.ang2pix(nside,ra_obs[ix],dec_obs[ix])
         probs = event_prob_maps[i]
-        total_prob = avearge_prob + probs[hpix].sum()
-    return total_prob/nevents
+        total_prob = total_prob + probs[hpix].sum()
+    print total_prob
+    return total_prob/float(nevents)
 
 def readFiles(spectraFile, transmissionFile):
     #open quasar spectrum and transmission curves

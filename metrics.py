@@ -23,15 +23,15 @@ class AreaProb(BaseMetric):
         # We currently do this using 'super', which just calls BaseMetric's method.
         # The call to super just basically looks like this .. you must pass the columns you need, and the kwargs.
         super(AreaProb, self).__init__(col=cols, metricName=metricName, **kwargs)
-        self.maps = []
+        self.pmaps = []
         self.mjds = np.zeros(1)
-    def setEvents(maps,mjds):
-        self.maps = maps
+    def setEvents(self,maps,mjds):
+        self.pmaps = maps
         self.mjds = mjds
     # Now write out "run" method, the part that does the metric calculation.
     def run(self, dataSlice, slicePoint=None):
         result = defs.meanProb(dataSlice[self.MJDcol], dataSlice[self.RAcol], dataSlice[self.DECcol], dataSlice[self.Fcol], 
-                               self.maps, self.mjds, 
+                               self.pmaps, self.mjds, 
                                delta_t=10.,nside=16,band=None)
         return result
 
