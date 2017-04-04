@@ -23,7 +23,7 @@ import make_maps
 mjds=np.array([1.,8.,15.])
 ras=np.random.rand(3)*360.
 decs=np.random.rand(3)*(-30.)
-maps=gaussian2d_from_sample_map(ras,decs,sigma_ra=5.,sigma_dec=5.,nside=128):
+maps=gaussian2d_from_sample_map(ras,decs,sigma_ra=5.,sigma_dec=5.,nside=16):
 
 dirdb = '/data/des40.a/data/marcelle/lsst-gw/OperationsSimulatorBenchmarkSurveys/'
 file = 'kraken_1042_sqlite.db'
