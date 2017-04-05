@@ -44,14 +44,18 @@ def one_gaussian2d_from_sample_map(hpx,ra,dec,sigma_ra,sigma_dec,nside_p):
 
     #nside_p = 128
 
+    npix = hp.nside2npix(nside_p)
+
+#    print np.sqrt(npix)
+
     s = np.random.normal(ra,sigma_ra,len(hpx))
-    count, bins, ignored = plt.hist(s, nside_p*10, normed=False)
-    ra_prob = count/np.sum(count)
+    counts, bins, patches = plt.hist(s, int(np.sqrt(npix)), normed=False)
+    ra_prob = counts/np.sum(counts)
     ra_bin_edges = bins[:-1]
 
     s = np.random.normal(dec,sigma_dec,len(hpx))
-    count, bins, ignored = plt.hist(s, nside_p*10, normed=False)
-    dec_prob = count/np.sum(count)
+    counts, bins, patches = plt.hist(s, int(np.sqrt(npix)), normed=False)
+    dec_prob = counts/np.sum(counts)
     dec_bin_edges = bins[:-1]
 
     hpx_p=hpx
@@ -62,16 +66,48 @@ def one_gaussian2d_from_sample_map(hpx,ra,dec,sigma_ra,sigma_dec,nside_p):
 
     for pix in range(len(hpx_p)):
         ra_pix,dec_pix=pix2radec(pix,nside_p)
-        #if ra_pix > 180. : ra_pix = 360. - ra_pix 
+        if ra_pix>180. : ra_pix = ra_pix - 360.
         ra_idx=(np.abs(ra_bin_edges-ra_pix)).argmin()
         dec_idx=(np.abs(dec_bin_edges-dec_pix)).argmin()
         ra_p=ra_prob[ra_idx]
         dec_p=dec_prob[dec_idx]
         hpx_p[pix]=hpx_p[pix] * 0.0 + (ra_p * dec_p) 
 
+    norm_factor = hpx_p.sum()
+    hpx_p = hpx_p/norm_factor
+
     if nside > nside_p : hpx_p=hp.ud_grade(hpx_p, nside, power=-2)
 
-    #hp.mollview(hpx_p)
+#    print hpx_p.sum()
+#    hp.mollview(hpx_p)
+    
 
     return hpx_p
 
+
+def event_sample(nevents=1,ras=None,decs=None,
+                 mjd_start=59580.,season_length=365,mjds=None,
+                 map_type='gaussian'):
+
+    if ras is None: ras = np.random.uniform(0.,360.,nevents)
+    if decs is None: decs = np.random.uniform(-90.,90.,nevents)
+
+    if len(decs) == len(ras) :
+        nevents = len(ras)
+    else: 
+        print "Error: arrays ras,decs must have same length."
+        exit
+
+    mjd_end = mjd_start + season_length
+    if mjds is None : mjds = np.random.uniform(mjd_start,mjd_end,nevents)
+
+    if len(mjds) != len(ras):
+        print "Error: arrays mjds,ras,decs must have same length."
+
+    if map_type == 'gaussian':
+        maps=gaussian2d_from_sample_map(ras,decs,sigma_ra=5.,sigma_dec=5.,nside=32)
+    else:
+        print 'Error: unkonwn map_type. Only map_type="gaussian" is implemented at the moment.'
+        exit
+
+    return maps, mjds

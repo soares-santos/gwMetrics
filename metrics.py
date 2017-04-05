@@ -31,8 +31,7 @@ class AreaProb(BaseMetric):
     # Now write out "run" method, the part that does the metric calculation.
     def run(self, dataSlice, slicePoint=None):
         result = defs.meanProb(dataSlice[self.MJDcol], dataSlice[self.RAcol], dataSlice[self.DECcol], dataSlice[self.Fcol], 
-                               self.pmaps, self.mjds, 
-                               delta_t=10.,nside=16,band=None)
+                               self.pmaps, self.mjds, delta_t=10.,band=None)
         return result
 
 

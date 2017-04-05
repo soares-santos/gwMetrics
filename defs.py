@@ -11,19 +11,45 @@ from palettable.colorbrewer.qualitative import Paired_11
 colors = Paired_11.hex_colors
 import healpy as hp
 
-def meanProb(mjd_obs, ra_obs, dec_obs, band_obs, event_prob_maps, event_mjds, delta_t=10.,nside=16,band=None):
+def meanProb(mjd_obs, ra_obs, dec_obs, band_obs, event_prob_maps, event_mjds, delta_t=10.,band=None):
+
+# check length of input gw event arrays
     nevents = len(event_prob_maps)
-    #print nevents
     if len(event_mjds) != nevents : 
         print "Error: event_mjds and event_prob_maps must have the same length." 
         exit
+
+# set radius to camera's FOV diameter * 0.5
+    radius=np.deg2rad(3.5*0.5)
+    print radius
+
+# add prob over all events
     total_prob = 0.
     for i in np.arange(nevents):
+        nside=hp.npix2nside(len(event_prob_maps[i]))
         ix = ((mjd_obs < event_mjds[i] + delta_t) & (mjd_obs > event_mjds[i]))
-        hpix=hp.ang2pix(nside,ra_obs[ix],dec_obs[ix])
-        probs = event_prob_maps[i]
-        total_prob = total_prob + probs[hpix].sum()
-    print total_prob
+        if len(ix) > 0:
+            theta = 0.5 * np.pi - dec_obs[ix] 
+            phi = ra_obs[ix]
+            vec = hp.ang2vec(theta,phi)
+            hpix = np.zeros(0,dtype=np.int)
+            for j in np.arange(len(vec)):
+                 hpix = np.append(hpix,hp.query_disc(nside,vec[j],radius))
+            hpix = np.unique(hpix)
+            prob = event_prob_maps[i][hpix]
+            total_prob = total_prob + prob.sum()
+            print i, prob.sum(), total_prob
+
+            # make map of number of observations
+            obs_nside = 16
+            obs_map = np.zeros(hp.nside2npix(obs_nside),dtype=np.int) 
+            hpix_obs = hp.ang2pix(obs_nside,theta,phi)
+            for pix in hpix_obs: 
+                obs_map[pix] = obs_map[pix] + 1
+                ##print pix, obs_map[pix]
+###            hp.mollview(obs_map)
+
+    print total_prob, nevents, total_prob/nevents
     return total_prob/float(nevents)
 
 def readFiles(spectraFile, transmissionFile):
